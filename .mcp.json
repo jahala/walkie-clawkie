@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "walkie": {
+      "command": "node",
+      "args": ["./walkie.mjs"],
+      "env": { "WALKIE_ID": "cape-town" }
+    }
+  }
+}
