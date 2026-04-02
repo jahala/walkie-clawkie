@@ -109,6 +109,7 @@ function startAgent() {
     (process.env.WALKIE_ALLOW ?? "").split(",").filter(Boolean)
   );
   const pending = new Map(); // agent → { from, message }
+  const inbox = [];          // delivered messages buffer
 
   // --- mcp protocol ---------------------------------------------------------
 
@@ -155,7 +156,7 @@ function startAgent() {
           `You are agent "${ID}". You have a walkie-talkie.`,
           `Incoming messages appear as <channel> tags with a "from" attribute.`,
           `Use walkie_send to talk to other agents. Use walkie_agents to see who's around.`,
-          `If an unknown agent tries to contact you, you'll be asked to walkie_allow or walkie_deny them.`,
+          `Use walkie_inbox to check for replies. If an unknown agent tries to contact you, ask the user before calling walkie_allow or walkie_deny.`,
           `To reach agents on other machines: run "node walkie.mjs --relay" then expose it with "cloudflared tunnel --url http://localhost:4747" (free, no account needed).`,
           `Give the resulting URL to the user so they can pass it to the remote agent as WALKIE_RELAY.`,
         ].join(" "),
@@ -216,6 +217,11 @@ function startAgent() {
         required: ["agent"],
       },
     },
+    {
+      name: "walkie_inbox",
+      description: "Check for received messages",
+      inputSchema: { type: "object", properties: {} },
+    },
   ];
 
   function text(t) {
@@ -236,6 +242,7 @@ function startAgent() {
       const held = pending.get(agent);
       if (held) {
         pending.delete(agent);
+        inbox.push({ from: held.from, message: held.message });
         notify(held.message, { from: held.from });
         return text(`Allowed ${agent}. Their message has been delivered.`);
       }
@@ -246,12 +253,18 @@ function startAgent() {
       pending.delete(agent);
       return text(held ? `Denied and dropped message from ${agent}.` : `Nothing pending from ${agent}.`);
     },
+    async walkie_inbox() {
+      const msgs = inbox.splice(0);
+      if (!msgs.length) return text("No new messages.");
+      return text(msgs.map((m) => `[${m.from}]: ${m.message}`).join("\n"));
+    },
   };
 
   // --- trust gate -----------------------------------------------------------
 
   function onMessage(from, message) {
     if (trusted.has(from)) {
+      inbox.push({ from, message });
       notify(message, { from });
     } else {
       pending.set(from, { from, message });
