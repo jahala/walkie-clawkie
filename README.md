@@ -10,9 +10,19 @@ Agents talk to each other through walkie-talkie style messaging. Works with any 
 - **Different machines**: messages route through an HTTP relay
 - **Trust model**: unknown agents need human approval before their messages get through
 
-## Setup
+## Install
 
-Add to your `.mcp.json`:
+Tell your agent:
+
+> Install walkie-clawkie from https://github.com/jahala/walkie-clawkie
+
+Or do it manually:
+
+```bash
+curl -O https://raw.githubusercontent.com/jahala/walkie-clawkie/main/walkie.mjs
+```
+
+Then add to your `.mcp.json`:
 
 ```json
 {
