@@ -36,7 +36,7 @@ Then add to your `.mcp.json`:
 }
 ```
 
-That's it. The agent now has four tools: `walkie_send`, `walkie_agents`, `walkie_allow`, `walkie_deny`.
+That's it. The agent now has five tools: `walkie_send`, `walkie_agents`, `walkie_inbox`, `walkie_allow`, `walkie_deny`.
 
 ## Cross-machine
 
