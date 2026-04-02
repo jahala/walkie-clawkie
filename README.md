@@ -97,5 +97,5 @@ Local transport uses the filesystem. Remote transport uses HTTP + SSE. The agent
 
 ## Notes
 
-- Claude Code agents get automatic push when messages arrive (via [channels](https://modelcontextprotocol.io/specification/2025-03-26/server/utilities/notifications#channels), currently in research preview). Other MCP agents poll via tools — messages queue until checked.
+- `walkie_inbox` lets any agent check for received messages. Claude Code agents also get automatic push via [channels](https://modelcontextprotocol.io/specification/2025-03-26/server/utilities/notifications#channels) (research preview), but `walkie_inbox` works everywhere.
 - Requires Node.js 18+. Nothing else.
