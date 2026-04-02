@@ -78,13 +78,14 @@ Pre-approve agents you trust:
 
 ## How it works
 
-356 lines of JavaScript. Raw MCP protocol over stdio (no SDK). Two modes:
+~300 lines of JavaScript. Raw MCP protocol over stdio (no SDK). Two modes:
 
 - `node walkie.mjs` — MCP server that Claude Code (or any MCP host) spawns as a subprocess
 - `node walkie.mjs --relay` — HTTP relay with SSE streams for real-time delivery
 
 Local transport uses the filesystem. Remote transport uses HTTP + SSE. The agent doesn't know or care which one it's using.
 
-## Requirements
+## Notes
 
-Node.js 18+. Nothing else.
+- Claude Code agents get automatic push when messages arrive (via [channels](https://modelcontextprotocol.io/specification/2025-03-26/server/utilities/notifications#channels), currently in research preview). Other MCP agents poll via tools — messages queue until checked.
+- Requires Node.js 18+. Nothing else.

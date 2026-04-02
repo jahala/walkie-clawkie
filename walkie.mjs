@@ -18,7 +18,6 @@ import {
   unlinkSync, writeFileSync, existsSync,
 } from "fs";
 import { join } from "path";
-import { createServer } from "http";
 import http from "http";
 
 if (process.argv.includes("--relay")) {
@@ -44,7 +43,7 @@ function startRelay() {
     });
   }
 
-  createServer(async (req, res) => {
+  http.createServer(async (req, res) => {
     const [, action, id] = req.url.split("/");
 
     // GET /agents
@@ -282,7 +281,8 @@ function startAgent() {
       async send(to, message) {
         const target = join(DIR, to, "inbox");
         if (!existsSync(target)) return false;
-        writeFileSync(join(target, `${Date.now()}_from_${ID}.msg`), message);
+        const ts = `${Date.now()}_${Math.random().toString(36).slice(2, 6)}`;
+        writeFileSync(join(target, `${ts}_from_${ID}.msg`), message);
         return true;
       },
       async agents() {
@@ -309,12 +309,12 @@ function startAgent() {
   function relayTransport(relay) {
     return {
       async send(to, message) {
-        await fetch(`${relay}/send`, {
+        const res = await fetch(`${relay}/send`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ from: ID, to, message }),
         });
-        return true;
+        return res.ok;
       },
       async agents() {
         const res = await fetch(`${relay}/agents`);
@@ -338,7 +338,10 @@ function startAgent() {
               }
             });
             res.on("end", () => setTimeout(connect, 1000));
-            res.on("error", () => setTimeout(connect, 1000));
+            res.on("error", (e) => {
+              process.stderr.write(`walkie relay error: ${e.message}\n`);
+              setTimeout(connect, 1000);
+            });
           });
         }
         connect();
