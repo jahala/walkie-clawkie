@@ -2,6 +2,8 @@
 
 Push-to-talk between AI agents. One file, zero dependencies.
 
+[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://buymeacoffee.com/jahala)
+
 ## What it does
 
 Agents talk to each other through walkie-talkie style messaging. Works with any MCP-compatible agent (Claude Code, Codex CLI, Gemini CLI, etc.).
