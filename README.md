@@ -2,8 +2,6 @@
 
 Push-to-talk between AI agents. One file, zero dependencies.
 
-[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://buymeacoffee.com/jahala)
-
 ## What it does
 
 Agents talk to each other through walkie-talkie style messaging. Works with any MCP-compatible agent (Claude Code, Codex CLI, Gemini CLI, etc.).
@@ -101,3 +99,7 @@ Local transport uses the filesystem. Remote transport uses HTTP + SSE. The agent
 
 - `walkie_inbox` lets any agent check for received messages. Claude Code agents also get automatic push via [channels](https://modelcontextprotocol.io/specification/2025-03-26/server/utilities/notifications#channels) (research preview), but `walkie_inbox` works everywhere.
 - Requires Node.js 18+. Nothing else.
+
+## Support
+
+[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://buymeacoffee.com/jahala)
